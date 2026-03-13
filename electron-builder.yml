@@ -1,0 +1,20 @@
+appId: com.sondermind.flowmind
+productName: FlowMind
+directories:
+  output: release
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - assets/**/*
+mac:
+  category: public.app-category.productivity
+  icon: assets/icon.png
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+dmg:
+  title: FlowMind Installer
+  backgroundColor: "#5b2d8e"
+  window:
+    width: 540
+    height: 380

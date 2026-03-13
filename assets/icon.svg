@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#5B2D8E"/>
+
+  <!-- Top node: Start/End pill -->
+  <rect x="176" y="68" width="160" height="64" rx="32" fill="#00B5AD"/>
+
+  <!-- Arrow down from top node -->
+  <line x1="256" y1="132" x2="256" y2="186" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="256,200 244,180 268,180" fill="white"/>
+
+  <!-- Middle-left node: Process rectangle -->
+  <rect x="88" y="200" width="136" height="56" rx="10" fill="white" fill-opacity="0.95"/>
+
+  <!-- Middle-right node: Process rectangle -->
+  <rect x="288" y="200" width="136" height="56" rx="10" fill="white" fill-opacity="0.95"/>
+
+  <!-- Decision diamond (center) -->
+  <polygon points="256,184 310,244 256,304 202,244" fill="#F39C12"/>
+  <!-- Diamond outline -->
+  <polygon points="256,184 310,244 256,304 202,244" fill="none" stroke="white" stroke-width="4"/>
+
+  <!-- Arrow from diamond to left node -->
+  <line x1="202" y1="244" x2="160" y2="244" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <!-- Arrow label yes -->
+  <text x="168" y="238" font-family="Inter,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">Y</text>
+
+  <!-- Arrow from diamond to right node -->
+  <line x1="310" y1="244" x2="352" y2="244" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <!-- Arrow label no -->
+  <text x="344" y="238" font-family="Inter,sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">N</text>
+
+  <!-- Left node content lines -->
+  <rect x="110" y="222" width="92" height="8" rx="4" fill="#5B2D8E" fill-opacity="0.35"/>
+  <rect x="110" y="238" width="68" height="8" rx="4" fill="#5B2D8E" fill-opacity="0.25"/>
+
+  <!-- Right node content lines -->
+  <rect x="308" y="222" width="92" height="8" rx="4" fill="#5B2D8E" fill-opacity="0.35"/>
+  <rect x="308" y="238" width="68" height="8" rx="4" fill="#5B2D8E" fill-opacity="0.25"/>
+
+  <!-- Arrow down from left node to bottom -->
+  <line x1="156" y1="256" x2="156" y2="326" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <line x1="156" y1="326" x2="256" y2="326" stroke="white" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Arrow down from right node to bottom -->
+  <line x1="356" y1="256" x2="356" y2="326" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <line x1="356" y1="326" x2="256" y2="326" stroke="white" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Arrow down to end node -->
+  <line x1="256" y1="326" x2="256" y2="358" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="256,372 244,352 268,352" fill="white"/>
+
+  <!-- Bottom node: End pill -->
+  <rect x="176" y="372" width="160" height="64" rx="32" fill="#00B5AD"/>
+
+  <!-- "FM" wordmark in top node -->
+  <text x="256" y="110" font-family="Inter,sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle">START</text>
+
+  <!-- "END" in bottom node -->
+  <text x="256" y="414" font-family="Inter,sans-serif" font-size="30" font-weight="700" fill="white" text-anchor="middle">END</text>
+</svg>
