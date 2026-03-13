@@ -8,7 +8,7 @@ import { colors, radii, shadows } from '../styles/theme'
 export default function Settings() {
   const navigate  = useNavigate()
   const location  = useLocation()
-  const { setHasApiKey, hasApiKey } = useFlowStore()
+  const { setHasApiKey, hasApiKey, snapToGrid, setSnapToGrid, showGridlines, setShowGridlines } = useFlowStore()
   const fromGuard = (location.state as { fromGuard?: boolean } | null)?.fromGuard ?? false
 
   const [apiKey, setApiKey]       = useState('')
@@ -210,6 +210,74 @@ export default function Settings() {
             )}
             {saved ? '✓  Saved — going home…' : saving ? 'Saving…' : 'Save API Key'}
           </button>
+        </div>
+
+        {/* ── Canvas Settings card ───────────────────────────────────────── */}
+        <div className="card fade-in" style={{ marginBottom: 20 }}>
+
+          {/* Card header */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 22 }}>
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                background: colors.lightPurple,
+                borderRadius: radii.md,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 20,
+                flexShrink: 0,
+              }}
+            >
+              ⚙️
+            </div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: colors.darkText }}>
+                Canvas Settings
+              </h3>
+              <p style={{ margin: 0, fontSize: 12, color: '#999', marginTop: 2 }}>
+                Customize how the canvas behaves
+              </p>
+            </div>
+          </div>
+
+          {/* Snap to Grid toggle */}
+          <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, cursor: 'pointer' }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: colors.darkText, marginBottom: 2 }}>
+                Snap to Grid
+              </div>
+              <div style={{ fontSize: 12, color: '#999' }}>
+                Align nodes to a 20x20 pixel grid when dragging
+              </div>
+            </div>
+            <input
+              type="checkbox"
+              checked={snapToGrid}
+              onChange={(e) => setSnapToGrid(e.target.checked)}
+              style={{ width: 20, height: 20, cursor: 'pointer' }}
+            />
+          </label>
+
+          {/* Show Gridlines toggle */}
+          <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: colors.darkText, marginBottom: 2 }}>
+                Show Gridlines
+              </div>
+              <div style={{ fontSize: 12, color: '#999' }}>
+                Display dot grid pattern on canvas background
+              </div>
+            </div>
+            <input
+              type="checkbox"
+              checked={showGridlines}
+              onChange={(e) => setShowGridlines(e.target.checked)}
+              style={{ width: 20, height: 20, cursor: 'pointer' }}
+            />
+          </label>
+
         </div>
 
         {/* ── About card ─────────────────────────────────────────────────── */}

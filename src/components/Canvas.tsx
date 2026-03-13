@@ -33,7 +33,7 @@ function toRFNodes(flowNodes: FlowData['nodes']): Node[] {
     id: n.id,
     type: n.type,
     position: n.position,
-    data: { label: n.label, lane: n.lane },
+    data: { label: n.label, lane: n.lane, color: n.color },
   }))
 }
 
@@ -53,6 +53,7 @@ function toFlowNode(n: Node): FlowData['nodes'][number] {
     label: (n.data as { label: string }).label,
     position: n.position,
     lane: (n.data as { lane?: string }).lane,
+    color: (n.data as { color?: string }).color,
   }
 }
 
@@ -299,6 +300,8 @@ export default function Canvas() {
     pushHistory,
     undo,
     redo,
+    snapToGrid,
+    showGridlines,
   } = useFlowStore()
 
   const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -547,14 +550,18 @@ export default function Canvas() {
         nodeTypes={nodeTypes}
         fitView
         deleteKeyCode={['Delete', 'Backspace']}
+        snapToGrid={snapToGrid}
+        snapGrid={[20, 20]}
       >
         {/* Dot-grid background */}
-        <Background
-          color={colors.lightPurple}
-          variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1.5}
-        />
+        {showGridlines && (
+          <Background
+            color={colors.lightPurple}
+            variant={BackgroundVariant.Dots}
+            gap={20}
+            size={1.5}
+          />
+        )}
 
         {/* Controls (zoom in/out/reset) — bottom-left by default */}
         <Controls />

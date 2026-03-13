@@ -16,6 +16,9 @@ interface FlowStore {
   hasApiKey:       boolean
   /** Claude's explanation of why it chose this diagram type — shown as a toast. */
   aiInsightReason: string
+  /** Canvas settings */
+  snapToGrid:      boolean
+  showGridlines:   boolean
 
   // ── Actions ─────────────────────────────────────────────────────────────────
   setNodes:         (nodes: FlowNode[]) => void
@@ -33,6 +36,8 @@ interface FlowStore {
   setSavedFlows:    (flows: FlowData[]) => void
   setHasApiKey:     (val: boolean) => void
   markSaved:        () => void
+  setSnapToGrid:    (val: boolean) => void
+  setShowGridlines: (val: boolean) => void
 }
 
 export const useFlowStore = create<FlowStore>((set, get) => ({
@@ -44,6 +49,8 @@ export const useFlowStore = create<FlowStore>((set, get) => ({
   isModified:      false,
   hasApiKey:       false,
   aiInsightReason: '',
+  snapToGrid:      true,
+  showGridlines:   true,
 
   // ── Mutations that mark the flow as modified ─────────────────────────────────
 
@@ -159,7 +166,9 @@ export const useFlowStore = create<FlowStore>((set, get) => ({
 
   // ── Utility ──────────────────────────────────────────────────────────────────
 
-  setSavedFlows: (flows) => set({ savedFlows: flows }),
-  setHasApiKey:  (val)   => set({ hasApiKey: val }),
-  markSaved:     ()      => set({ isModified: false }),
+  setSavedFlows:    (flows) => set({ savedFlows: flows }),
+  setHasApiKey:     (val)   => set({ hasApiKey: val }),
+  markSaved:        ()      => set({ isModified: false }),
+  setSnapToGrid:    (val)   => set({ snapToGrid: val }),
+  setShowGridlines: (val)   => set({ showGridlines: val }),
 }))

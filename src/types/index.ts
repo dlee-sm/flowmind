@@ -65,6 +65,8 @@ export interface NodeData {
   label: string
   /** Swimlane nodes carry a role / department name for lane grouping. */
   lane?: string
+  /** Custom color for the node (hex string, e.g., '#5b2d8e'). */
+  color?: string
 }
 
 // ── Flow document types ───────────────────────────────────────────────────────
@@ -77,6 +79,8 @@ export interface FlowNode {
   position: { x: number; y: number }
   /** Present only on swimlane nodes — the lane name (role/department). */
   lane?:    string
+  /** Custom color (hex string). */
+  color?:   string
 }
 
 /** A directed edge connecting two nodes. */
@@ -116,9 +120,13 @@ export interface ClaudeResponse {
 
 // ── Application settings ──────────────────────────────────────────────────────
 
-/** Persisted application preferences (currently just the API key). */
+/** Persisted application preferences. */
 export interface AppSettings {
   apiKey: string
+  /** Enable snap-to-grid on canvas. */
+  snapToGrid?: boolean
+  /** Show/hide grid lines on canvas. */
+  showGridlines?: boolean
 }
 
 // ── IPC result types ──────────────────────────────────────────────────────────

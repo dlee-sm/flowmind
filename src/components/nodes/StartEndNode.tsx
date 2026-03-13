@@ -10,6 +10,9 @@ export default function StartEndNode({ id, data, selected }: NodeProps<NodeData>
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(data.label)
   const [hovered, setHovered] = useState(false)
+  const [showColorPicker, setShowColorPicker] = useState(false)
+
+  const nodeColor = data.color || colors.tealAccent
 
   const startEdit = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
@@ -25,6 +28,13 @@ export default function StartEndNode({ id, data, selected }: NodeProps<NodeData>
   }, [id, draft, setNodes])
 
   const cancelEdit = useCallback(() => setEditing(false), [])
+
+  const changeColor = useCallback((color: string) => {
+    setNodes((nds) =>
+      nds.map((n) => n.id === id ? { ...n, data: { ...n.data, color } } : n)
+    )
+    setShowColorPicker(false)
+  }, [id, setNodes])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -42,7 +52,7 @@ export default function StartEndNode({ id, data, selected }: NodeProps<NodeData>
       onMouseLeave={() => setHovered(false)}
       style={{
         position: 'relative',
-        background: colors.tealAccent,
+        background: nodeColor,
         color: colors.white,
         // Spec: teal selection ring for all nodes (not purple)
         border: `2.5px solid ${selected ? colors.tealAccent : 'transparent'}`,
@@ -57,20 +67,41 @@ export default function StartEndNode({ id, data, selected }: NodeProps<NodeData>
         fontWeight: 700,
         cursor: editing ? 'text' : 'grab',
         boxShadow: hovered
-          ? '0 6px 18px rgba(0,181,173,0.42)'
+          ? `0 6px 18px ${nodeColor}66`
           : '0 2px 6px rgba(0,0,0,0.13)',
         transition: 'box-shadow 0.18s, outline 0.15s',
         userSelect: 'none',
       }}
     >
       {hovered && !editing && (
-        <button
-          onClick={(e) => { e.stopPropagation(); deleteNode(id) }}
-          style={deleteBtn}
-          title="Delete node"
-        >
-          ×
-        </button>
+        <>
+          <button
+            onClick={(e) => { e.stopPropagation(); setShowColorPicker(!showColorPicker) }}
+            style={colorBtn}
+            title="Change color"
+          >
+            🎨
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); deleteNode(id) }}
+            style={deleteBtn}
+            title="Delete node"
+          >
+            ×
+          </button>
+        </>
+      )}
+      {showColorPicker && (
+        <div style={colorPickerContainer} onClick={(e) => e.stopPropagation()}>
+          {[colors.primaryPurple, colors.tealAccent, colors.warningOrange, colors.successGreen, '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'].map((c) => (
+            <button
+              key={c}
+              onClick={() => changeColor(c)}
+              style={{ ...colorSwatch, background: c }}
+              title={c}
+            />
+          ))}
+        </div>
       )}
       <Handle type="target" position={Position.Top} />
       {editing ? (
@@ -100,6 +131,25 @@ export default function StartEndNode({ id, data, selected }: NodeProps<NodeData>
   )
 }
 
+const colorBtn: React.CSSProperties = {
+  position: 'absolute',
+  top: -8,
+  right: 16,
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  background: '#fff',
+  color: '#333',
+  border: '1px solid #ddd',
+  cursor: 'pointer',
+  fontSize: 11,
+  lineHeight: '20px',
+  textAlign: 'center',
+  boxShadow: '0 2px 6px rgba(0,0,0,0.28)',
+  zIndex: 10,
+  padding: 0,
+}
+
 const deleteBtn: React.CSSProperties = {
   position: 'absolute',
   top: -8,
@@ -118,4 +168,27 @@ const deleteBtn: React.CSSProperties = {
   boxShadow: '0 2px 6px rgba(0,0,0,0.28)',
   zIndex: 10,
   padding: 0,
+}
+
+const colorPickerContainer: React.CSSProperties = {
+  position: 'absolute',
+  top: -50,
+  right: -8,
+  background: '#fff',
+  borderRadius: 8,
+  padding: 8,
+  display: 'flex',
+  gap: 6,
+  boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+  zIndex: 20,
+}
+
+const colorSwatch: React.CSSProperties = {
+  width: 24,
+  height: 24,
+  borderRadius: 4,
+  border: '2px solid #fff',
+  cursor: 'pointer',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+  transition: 'transform 0.1s',
 }

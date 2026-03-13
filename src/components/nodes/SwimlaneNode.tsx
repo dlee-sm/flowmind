@@ -10,6 +10,9 @@ export default function SwimlaneNode({ id, data, selected }: NodeProps<NodeData>
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(data.label)
   const [hovered, setHovered] = useState(false)
+  const [showColorPicker, setShowColorPicker] = useState(false)
+
+  const nodeColor = data.color || colors.lightPurple
 
   const startEdit = useCallback((e: React.MouseEvent) => {
     e.stopPropagation()
@@ -25,6 +28,13 @@ export default function SwimlaneNode({ id, data, selected }: NodeProps<NodeData>
   }, [id, draft, setNodes])
 
   const cancelEdit = useCallback(() => setEditing(false), [])
+
+  const changeColor = useCallback((color: string) => {
+    setNodes((nds) =>
+      nds.map((n) => n.id === id ? { ...n, data: { ...n.data, color } } : n)
+    )
+    setShowColorPicker(false)
+  }, [id, setNodes])
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -57,7 +67,7 @@ export default function SwimlaneNode({ id, data, selected }: NodeProps<NodeData>
       {/* ── Lane header — shows the role/department name + delete button ── */}
       <div
         style={{
-          background: colors.lightPurple,
+          background: nodeColor,
           borderBottom: `1px solid ${colors.borderGray}`,
           padding: '5px 12px',
           fontSize: 10,
@@ -69,19 +79,41 @@ export default function SwimlaneNode({ id, data, selected }: NodeProps<NodeData>
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 6,
+          position: 'relative',
         }}
       >
         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {data.lane ?? 'Lane'}
         </span>
         {hovered && (
-          <button
-            onClick={(e) => { e.stopPropagation(); deleteNode(id) }}
-            style={deleteBtnInline}
-            title="Delete node"
-          >
-            ×
-          </button>
+          <div style={{ display: 'flex', gap: 4 }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); setShowColorPicker(!showColorPicker) }}
+              style={colorBtnInline}
+              title="Change color"
+            >
+              🎨
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); deleteNode(id) }}
+              style={deleteBtnInline}
+              title="Delete node"
+            >
+              ×
+            </button>
+          </div>
+        )}
+        {showColorPicker && (
+          <div style={colorPickerContainer} onClick={(e) => e.stopPropagation()}>
+            {[colors.primaryPurple, colors.tealAccent, colors.warningOrange, colors.successGreen, '#3b82f6', '#ec4899', '#8b5cf6', '#10b981'].map((c) => (
+              <button
+                key={c}
+                onClick={() => changeColor(c)}
+                style={{ ...colorSwatch, background: c }}
+                title={c}
+              />
+            ))}
+          </div>
         )}
       </div>
 
@@ -136,6 +168,22 @@ export default function SwimlaneNode({ id, data, selected }: NodeProps<NodeData>
   )
 }
 
+const colorBtnInline: React.CSSProperties = {
+  flexShrink: 0,
+  width: 16,
+  height: 16,
+  borderRadius: '50%',
+  background: '#fff',
+  color: '#333',
+  border: '1px solid #ddd',
+  cursor: 'pointer',
+  fontSize: 9,
+  lineHeight: '16px',
+  textAlign: 'center',
+  boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
+  padding: 0,
+}
+
 const deleteBtnInline: React.CSSProperties = {
   flexShrink: 0,
   width: 16,
@@ -151,4 +199,27 @@ const deleteBtnInline: React.CSSProperties = {
   fontWeight: 700,
   boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
   padding: 0,
+}
+
+const colorPickerContainer: React.CSSProperties = {
+  position: 'absolute',
+  top: 30,
+  right: -8,
+  background: '#fff',
+  borderRadius: 8,
+  padding: 8,
+  display: 'flex',
+  gap: 6,
+  boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+  zIndex: 20,
+}
+
+const colorSwatch: React.CSSProperties = {
+  width: 24,
+  height: 24,
+  borderRadius: 4,
+  border: '2px solid #fff',
+  cursor: 'pointer',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+  transition: 'transform 0.1s',
 }
